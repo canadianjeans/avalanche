@@ -7,7 +7,7 @@ setup(
   author = 'Matthew Jefferson',
   author_email = 'matt.jefferson@spirent.com',
   url = 'https://github.com/canadianjeans/avalanche.git', # use the URL to the github repo
-  download_url = 'https://github.com/canadianjeans/avalanche/archive/0.1.zip', # I'll explain this in a second
-  keywords = ['testing', 'logging', 'example'], # arbitrary keywords
+  download_url = 'https://github.com/canadianjeans/avalanche/archive/0.1.zip',
+  keywords = ['Spirent', 'avalanche', 'python'], 
   classifiers = [],
 )
