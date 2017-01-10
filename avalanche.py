@@ -29,9 +29,15 @@
 #           -Fixed an issue with av.perform and the "export" command.
 #
 # 1.1.2    11/30/2016 by Matthew Jefferson
-#           -Changed the init sligtly so that the apipath and libpath are placed
+#           -Changed the init slightly so that the apipath and libpath are placed
 #            at the head of the Tcl auto_path. This will impact the usefulness
 #            of the TCLLIBPATH environment variable.
+#
+# 1.1.3    01/10/2017 by Matthew Jefferson
+#           -Uploaded the library to PyPI.
+#
+# 1.1.4    01/10/2017 by Matthew Jefferson
+#           -Messed up 1.1.3. Uploading the updated code.
 #
 ###############################################################################
 
@@ -704,6 +710,14 @@ class AVA:
     def reserveAll(self, test, force=False):
         # Reserve all of the interfaces defined in the test.
         # Do this by determining the existing interfaces, and then reserving them.
+        # The user only need set the "port" attribute for each interface object
+        # before calling this method.
+        #
+        # This method replaces the following native calls:
+        #   perform("SetInterfaceAttributes")
+        #   connect(<chassisip>)
+        #   perform("ReservePort") or reserve()
+        
         
         # We need to find the information for the "SetInterfaceAttributes" command.
         # It is found in the physical port information when you connect to the hardware/virtual.
