@@ -39,6 +39,9 @@
 # 1.1.4    01/10/2017 by Matthew Jefferson
 #           -Messed up 1.1.3. Uploading the updated code.
 #
+# 1.1.5    01/10/2017 by Matthew Jefferson
+#           -Fixed a small issue with integers.
+#
 ###############################################################################
 
 ###############################################################################
@@ -218,7 +221,7 @@ class AVA:
         for key in kwargs:
             #tclcode = tclcode + ' ' + '-' + key + ' "' + str(kwargs[key]) + '"'
             reg = re.compile("\[")
-            if reg.match(kwargs[key]):
+            if reg.match(str(kwargs[key])):
                 # This is a Tcl command (eg: [NULL]).
                 tclcode = tclcode + ' ' + '-' + key + " " + str(kwargs[key])
             else:
