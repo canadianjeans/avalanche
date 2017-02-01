@@ -1244,7 +1244,7 @@ class AVA:
         return                
 
     #==============================================================================
-    def __init__(self, apipath=None, logpath=None, loglevel="INFO"):
+    def __init__(self, apipath=None, logpath=None, loglevel="DEBUG"):
         """
         Load the Avalanche API and initialize the Python environment.
 
@@ -1289,12 +1289,12 @@ class AVA:
             loglevel = logging.ERROR
         elif loglevel == "WARNING":
             loglevel = logging.WARNING
-        elif loglevel == "DEBUG":
-            loglevel = logging.DEBUG
-        else:
-            # INFO is the default log level.
+        elif loglevel == "INFO":            
             loglevel = logging.INFO
-
+        else:
+            # DEBUG is the default log level.
+            loglevel = logging.DEBUG        
+            
         logging.basicConfig(filename=self.logfile, filemode="w", level=loglevel, format="%(asctime)s %(levelname)s %(message)s")
         #logging.Formatter(fmt='%(asctime)s.%(msecs)03d',datefmt='%Y/%m/%d %H:%M:%S')
         # Add timestamps to each log message.
@@ -1326,7 +1326,11 @@ class AVA:
 
         if apipath:     
             # Add the path to the API so that Tcl can find it.
-            libpath = apipath + '/lib'
+            libpath = apipath + "/lib"
+
+            # Add brackets just in case the path has spaces.
+            apipath = "{" + apipath + "}"
+            libpath = "{" + libpath + "}"
 
             # Use this code if you want the TCLLIBPATH environment variable to be able 
             # to override the auto_path used by a script.            
@@ -1335,13 +1339,15 @@ class AVA:
 
             # This code makes sure that the Python wrapper always uses the exact path
             # specified by av.init(apipath).
-            self.Exec('set ::auto_path [concat ' + libpath + ' $::auto_path]')
-            self.Exec('set ::auto_path [concat ' + apipath + ' $::auto_path]')
+            self.Exec('set ::auto_path "' + libpath + ' $::auto_path"')
+            self.Exec('set ::auto_path "' + apipath + ' $::auto_path"')
             
 
 
         # Add the lib directory that is included with this module.
-        generallibpath = os.path.dirname(os.path.abspath(__file__)) + "/lib"
+        generallibpath = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')        
+        generallibpath = generallibpath + "/lib"
+
         if os.name == "nt":
             oslibpath = generallibpath + "/windows"
         elif os.name == "posix":
@@ -1349,8 +1355,8 @@ class AVA:
         else:
             print("Unsupported OS:" + os.name)
 
-        self.Exec('lappend ::auto_path ' + generallibpath)
-        self.Exec('lappend ::auto_path ' + oslibpath)
+        self.Exec('lappend ::auto_path [file normalize ' + generallibpath + ']')
+        self.Exec('lappend ::auto_path [file normalize ' + oslibpath + ']')
 
         logging.info("Tcl Version  = " + self.tcl.eval("info patchlevel"))
         logging.info("Tcl ::auto_path = " + self.tcl.eval('set ::auto_path'))
