@@ -344,7 +344,6 @@ class AVA:
         if command == "SetInterfaceAttributes":
             # Unfortunately, engineering has a sick sense of humor.
             # This command IGNORES the argument names, and instead makes the arguments position dependent.
-            # One word...What.The.F%$#.
             # av::perform SetInterfaceAttributes $tests_handle.topology.interface(1) -port 10.140.99.40/1/1 -physIf 0 -interfaceDisplayString 0,0 -interfaceLocationString 0,0
 
             port           = kwargs["port"] 
